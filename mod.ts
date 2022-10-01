@@ -67,14 +67,14 @@ export function parse(str: string, options: ParseOptions = {
 
     return cookie;
 }
-export function serialize(name: string, value: string, { encode, maxAge, domain, path, expires, httpOnly, secure, priority, sameSite }: SerializeOptions = { encode: encodeURIComponent }): string {
+export function serialize(name: string, value: string | null, { encode, maxAge, domain, path, expires, httpOnly, secure, priority, sameSite }: SerializeOptions = { encode: encodeURIComponent }): string {
     encode = encode || encodeURIComponent;
 
     if (!fieldContentRegExp.test(name)) {
         throw new TypeError("Invalid cookie name");
     }
-    value = encode(value);
-    if (!fieldContentRegExp.test(value)) {
+    value = encode(value || '');
+    if (!fieldContentRegExp.test(value) && value !== "") {
         throw new TypeError("Invalid cookie value");
     }
 
